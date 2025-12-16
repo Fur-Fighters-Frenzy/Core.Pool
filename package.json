@@ -1,0 +1,21 @@
+{
+  "name": "validosik.core.pool",
+  "displayName": "Core Pool",
+  "version": "0.0.1",
+  "unity": "6000.0",
+  "description": "Lightweight object pooling utilities for Unity: generic Pool<T>, MonoBehaviour prefab pool, IPoolable lifecycle hooks, and keyed tracked pools.",
+  "author": { "name": "validosik" },
+  "keywords": [
+    "pool",
+    "pooling",
+    "object-pool",
+    "unity",
+    "performance",
+    "allocation",
+    "gc",
+    "prewarm",
+    "monobehaviour",
+    "prefab",
+    "generic"
+  ]
+}
