@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace _Source.Gameplay.Pools.Common
 {
     public abstract class PoolMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
-        [SerializeField] private int              _initialCapacity  = 16;
-        [SerializeField] private OverflowBehavior _overflowBehavior = OverflowBehavior.Expand;
-        [SerializeField] private T                _prefab;
+        [SerializeField] protected int              _initialCapacity  = 16;
+        [SerializeField] protected OverflowBehavior _overflowBehavior = OverflowBehavior.Expand;
+        [SerializeField] protected T                _prefab;
 
         [SerializeField, Tooltip("optional parent")]
-        private Transform _parentForPooled;
+        protected Transform _parentForPooled;
 
-        [SerializeField] private bool _deactivateOnReturn = true;
+        [SerializeField] protected bool _deactivateOnReturn = true;
 
         private Pool<T> _pool;
 
@@ -41,20 +42,20 @@ namespace _Source.Gameplay.Pools.Common
             }
         }
 
-        protected void Awake()
+        protected virtual void Awake()
         {
-            if (_prefab == null)
-            {
-                Debug.LogError($"[{nameof(PoolMonoBehaviour<T>)}] Prefab is not assigned for {typeof(T).Name}");
-            }
-
-            _pool = new Pool<T>(
-                _overflowBehavior,
-                CreateInstance,
-                _initialCapacity
-            );
+            InitializePool(_overflowBehavior, CreateInstance, _initialCapacity);
         }
 
+        protected void InitializePool(OverflowBehavior overflowBehavior, Func<T> createFactory, int initialCapacity = 16)
+        {
+            _overflowBehavior = overflowBehavior;
+            _pool = new Pool<T>(
+                _overflowBehavior,
+                createFactory,
+                initialCapacity
+            );
+        }
 
         /// Instantiate prefab
         protected virtual T CreateInstance()
